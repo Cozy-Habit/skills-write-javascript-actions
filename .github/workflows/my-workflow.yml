@@ -14,3 +14,13 @@ jobs:
         id: joke
         uses: ./.github/actions/joke-action/
       - run: echo "OUTPUT -> ${{steps.joke.outputs.joke-output}}"
+      - env:
+          JOKE: ${{steps.joke.outputs.joke-output}}
+        run: echo "JOKE1 $JOKE"
+  job2:
+    runs-on: ubuntu-latest
+    needs: action
+    steps:
+      - env:
+          JOKES: ${{needs.action.outputs.joke-output}}
+        run: echo "JOKE2 $JOKES $JOKE"
