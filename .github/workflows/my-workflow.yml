@@ -10,19 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.joke.outputs.joke-output}}
+      output2: ${{ steps.blub.outputs.bla }}
     steps:
       - uses: actions/checkout@v4
       - name: ha-ha
         id: joke
         uses: ./.github/actions/joke-action/
       - run: echo "OUTPUT -> ${{steps.joke.outputs.joke-output}}"
-      - env:
-          JOKE: ${{steps.joke.outputs.joke-output}}
-        run: echo "JOKE1 $JOKE"
+      - id: blub
+        run: echo "bla=hello" >> "$GITHUB_OUTPUT"
   job2:
     runs-on: ubuntu-latest
     needs: action
     steps:
       - env:
           JOKES: ${{needs.action.outputs.output1}}
-        run: echo "JOKE2 $JOKES $JOKE"
+          BLUB: ${{needs.action.outputs.output2}}
+        run: echo "JOKE2 $JOKES $BLUB"
