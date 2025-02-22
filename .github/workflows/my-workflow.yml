@@ -8,8 +8,9 @@ jobs:
   action:
     if: ${{ !github.event.repository.is_template }}
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: ha-ha
+        id: joke
         uses: ./.github/actions/joke-action/
+      - run: echo "OUTPUT -> ${{steps.joke.outputs.joke-output}}"
